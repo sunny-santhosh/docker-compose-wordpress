@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 networks:
   wordpress:
@@ -19,9 +19,10 @@ services:
       - mysql
     networks:
       - wordpress
-
+  
+  #Database service for wordpress and here we use mysql 
   mysql:
-    image: mysql:5.7.29
+    image: mysql:5.7.40
     container_name: mysql
     restart: always
     ports:
@@ -35,7 +36,10 @@ services:
       SERVICE_NAME: mysql
     networks:
       - wordpress
-
+    volumes:
+      - ./mysql:/var/lib/mysql
+  
+  #PHP service section for handling wordpress
   php:
     build:
       context: .
@@ -46,6 +50,8 @@ services:
     networks:
       - wordpress
 
+
+  #Section deails with wordpress configuration
   wp:
     build:
       context: .
